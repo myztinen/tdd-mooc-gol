@@ -7,9 +7,13 @@ import { parseRLE } from "../src/parsing.mjs";
 
 describe("First test", () => {
   test("Can read file", () => {
+    let testContents = "#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\nx = 2, y = 2, rule = B3/S23\n2o$2o!";
     let fileContents = main("./resourses/block.rle");
-    expect(fileContents.comments).to.equal("#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\n");
-    expect(fileContents.header).to.equal("x = 2, y = 2, rule = B3/S23");
-    expect(fileContents.encodedPattern).to.equal("2o$2o!");
+    expect(fileContents).to.equal(testContents);
   });
+
+  test("Empty file throws error", () => {
+    expect(() => main("")).to.throw("Error reading a file");
+  });
+
 });
