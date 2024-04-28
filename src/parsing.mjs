@@ -88,7 +88,7 @@ export function patternToCells(data) {
       break;
     }
   } 
-  return ;
+  return cells;
 }
 
 

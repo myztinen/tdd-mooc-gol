@@ -76,33 +76,33 @@ describe("Encoding test", () => {
 describe("Pattern to cells test", () => {
   
   test("One live cell", () => {
-    expect(patternToCells("o!")).to.equal([{x:0, y:0}]);
+    expect(patternToCells("o!")).to.eql([{x:0, y:0}]);
   });
 
   test("One dead cell", () => {
-    expect(patternToCells("b!")).to.equal([]);
+    expect(patternToCells("b!")).to.eql([]);
   });
 
-  test.skip("Row of cells", () => {
-    expect(patternToCells("oo$!")).to.equal([{x:0, y:0},
-                                               {x:0, y:1},
-                                               {x:0, y:2}]);
-  });
-
-  test.skip("Column of cells", () => {
-    expect(patternToCells("o$o$o$!")).to.equal([{x:0, y:0},
+  test("Row of cells", () => {
+    expect(patternToCells("ooo$!")).to.eql([{x:0, y:0},
                                                {x:1, y:0},
                                                {x:2, y:0}]);
   });
 
-  test.skip("Simple block to cells", () => {
-    expect(patternToCells("oo$oo!")).to.equal([{x:0, y:0},
+  test("Column of cells", () => {
+    expect(patternToCells("o$o$o$!")).to.eql([{x:0, y:0},
+                                               {x:0, y:1},
+                                               {x:0, y:2}]);
+  });
+
+  test("Simple block to cells", () => {
+    expect(patternToCells("oo$oo!")).to.have.deep.members([{x:0, y:0},
                                                {x:0, y:1},
                                                {x:1, y:0},
                                                {x:1, y:1}]);
   });
 
-  test.skip("Empty cells", () => {
-    expect(patternToCells("")).to.equal([]);
+  test("Empty cells", () => {
+    expect(patternToCells("")).to.eql([]);
   });
 });
