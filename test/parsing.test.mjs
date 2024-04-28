@@ -1,6 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { parseRLE, encodedDataToFile, decodeRLEPattern, encodeRLEPattern } from "../src/parsing.mjs";
+import { parseRLE, encodedDataToFile, 
+  decodeRLEPattern, encodeRLEPattern,
+  patternToCells} from "../src/parsing.mjs";
 
 
 describe("Parsing test", () => {
@@ -32,7 +34,7 @@ describe("Parsing test", () => {
 
 });
 
-describe("Deconding test", () => {
+describe("Decoding test", () => {
 
   test("Simple block stays the same", () => {
     expect(decodeRLEPattern("2o$2o!")).to.equal("oo$oo!");
@@ -68,8 +70,39 @@ describe("Encoding test", () => {
   test("Empty string", () => {
     expect(encodeRLEPattern("")).to.equal("");
   });
-
-
 });
 
 
+describe("Pattern to cells test", () => {
+  
+  test("One live cell", () => {
+    expect(patternToCells("o!")).to.equal([{x:0, y:0}]);
+  });
+
+  test("One dead cell", () => {
+    expect(patternToCells("b!")).to.equal([]);
+  });
+
+  test.skip("Row of cells", () => {
+    expect(patternToCells("oo$!")).to.equal([{x:0, y:0},
+                                               {x:0, y:1},
+                                               {x:0, y:2}]);
+  });
+
+  test.skip("Column of cells", () => {
+    expect(patternToCells("o$o$o$!")).to.equal([{x:0, y:0},
+                                               {x:1, y:0},
+                                               {x:2, y:0}]);
+  });
+
+  test.skip("Simple block to cells", () => {
+    expect(patternToCells("oo$oo!")).to.equal([{x:0, y:0},
+                                               {x:0, y:1},
+                                               {x:1, y:0},
+                                               {x:1, y:1}]);
+  });
+
+  test.skip("Empty cells", () => {
+    expect(patternToCells("")).to.equal([]);
+  });
+});
