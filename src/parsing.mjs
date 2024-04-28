@@ -68,6 +68,26 @@ export function encodeRLEPattern(decodedPattern) {
 
 
 export function patternToCells(data) {
+  let patternX = 0;
+  let patternY = 0;
+  let cells = [];
+  for(let i =0; i< data.length; i++) {
+    if(data[i] == 'b') {
+      patternX++;
+      continue; 
+    } 
+    if(data[i] == 'o') {
+      cells.push({x:patternX, y:patternY});
+      patternX++;
+    }
+    if(data[i] == '$') {
+      patternY++;
+      patternX=0;
+    }
+    if(data[i] == '!') {
+      break;
+    }
+  } 
   return ;
 }
 
