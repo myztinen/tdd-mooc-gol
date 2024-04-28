@@ -1,7 +1,7 @@
 const fs = require('fs');
 import { parseRLE, encodedDataToFile, decodeRLEPattern,
-  encodeRLEPattern} from "./parsing.mjs";
-
+  encodeRLEPattern, cellsToPattern, patternToCells } from "./parsing.mjs";
+import { simulateGame } from "./game.mjs";
 
 export function main(filePath, iterations) {
   let fileContents;
@@ -13,8 +13,14 @@ export function main(filePath, iterations) {
 
   let parsedContents = parseRLE(fileContents);
   let decodedPattern = decodeRLEPattern(parsedContents.encodedPattern);
+  let startingCells = patternToCells(decodeRLEPattern);
+  let endingCells = simulateGame(startingCells, iterations);
+  let endingPattern = cellsToPattern(endingCells);
   let encodedDataPattern = encodeRLEPattern(decodedPattern);
-  let processedContents = encodedDataToFile(parsedContents);
+  let newFileContents = {comments: parsedContents.comments,
+                      header: parsedContents.header,
+                      encodedPattern : encodedDataPattern}
+  let processedContents = encodedDataToFile(newFileContents);
   return processedContents;
 
 }

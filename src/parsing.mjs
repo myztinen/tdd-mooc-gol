@@ -65,3 +65,14 @@ export function encodeRLEPattern(decodedPattern) {
   }
   return encodedPattern;
 }
+
+
+export function patternToCells(data) {
+  return ;
+}
+
+
+export function cellsToPattern(data) {
+  return ;
+}
+
