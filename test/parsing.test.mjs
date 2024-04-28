@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { parseRLE, encodedDataToFile } from "../src/parsing.mjs";
+import { parseRLE, encodedDataToFile, decodeRLEPattern } from "../src/parsing.mjs";
 
 
 describe("Parsing test", () => {
@@ -29,6 +29,23 @@ describe("Parsing test", () => {
   test("header is empty", () => {
     expect(encodedDataToFile(encodedData)).to.equal(testContents);
   });
+
+});
+
+describe("Deconding test", () => {
+
+  test("Simple block stays the same", () => {
+    expect(decodeRLEPattern("2o$2o!")).to.equal("oo$oo!");
+  });
+
+  test("Repeated tags", () => {
+    expect(decodeRLEPattern("1b1o1$1!")).to.equal("bo$!");
+  });
+
+  test("Empty string", () => {
+    expect(decodeRLEPattern("")).to.equal("");
+  });
+
 
 });
 

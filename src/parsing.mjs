@@ -25,4 +25,24 @@ export function encodedDataToFile(data) {
   return newContents;
 }
 
+export function decodeRLEPattern(encodedPattern) {
+  let decodedPattern = '';
+  const patterRegexp = /(\d)?([ob$!])/g;
+  let match;
 
+
+  while((match = patterRegexp.exec(encodedPattern)) != null ) {
+    let count = match[1] === '' ? 1 : parseInt(match[1]);
+    let letter = match[2];
+
+    if (letter == 'o' || letter == 'b') {
+      decodedPattern += letter.repeat(count);
+    } else if(letter == '$') {
+      decodedPattern += '$';
+    } else if(letter == '!') {
+      decodedPattern += '!';
+    }
+  }
+  return decodedPattern;
+   
+}
