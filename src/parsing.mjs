@@ -44,5 +44,9 @@ export function decodeRLEPattern(encodedPattern) {
     }
   }
   return decodedPattern;
-   
+}
+
+export function encodeRLEPattern(decodedPattern) {
+
+  return decodedPattern;
 }

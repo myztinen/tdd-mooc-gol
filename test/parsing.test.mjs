@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { parseRLE, encodedDataToFile, decodeRLEPattern } from "../src/parsing.mjs";
+import { parseRLE, encodedDataToFile, decodeRLEPattern, encodeRLEPattern } from "../src/parsing.mjs";
 
 
 describe("Parsing test", () => {
@@ -44,6 +44,21 @@ describe("Deconding test", () => {
 
   test("Empty string", () => {
     expect(decodeRLEPattern("")).to.equal("");
+  });
+});
+
+describe("Encoding test", () => {
+
+  test("Simple block stays the same", () => {
+    expect(encodeRLEPattern("oo$oo!")).to.equal("2o$2o!");
+  });
+
+  test("Repeated tags", () => {
+    expect(encodeRLEPattern("bo$!")).to.equal("1b1o1$1!");
+  });
+
+  test("Empty string", () => {
+    expect(encodeRLEPattern("")).to.equal("");
   });
 
 
