@@ -42,6 +42,10 @@ describe("Deconding test", () => {
     expect(decodeRLEPattern("1b1o1$1!")).to.equal("bo$!");
   });
 
+  test("Repeated tags 2", () => {
+    expect(decodeRLEPattern("2b2o3$!")).to.equal("bboo$$$!");
+  });
+
   test("Empty string", () => {
     expect(decodeRLEPattern("")).to.equal("");
   });
@@ -54,7 +58,11 @@ describe("Encoding test", () => {
   });
 
   test("Repeated tags", () => {
-    expect(encodeRLEPattern("bo$!")).to.equal("1b1o1$1!");
+    expect(encodeRLEPattern("bboo$$$!")).to.equal("2b2o3$!");
+  });
+
+  test("Repeated tags", () => {
+    expect(encodeRLEPattern("bbbooobbb$!")).to.equal("3b3o$!");
   });
 
   test("Empty string", () => {

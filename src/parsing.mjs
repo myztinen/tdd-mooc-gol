@@ -32,13 +32,12 @@ export function decodeRLEPattern(encodedPattern) {
 
 
   while((match = patterRegexp.exec(encodedPattern)) != null ) {
-    let count = match[1] === '' ? 1 : parseInt(match[1]);
+    let count = (match[1] === '' || match[1] === undefined) ? 1 : parseInt(match[1]);
     let letter = match[2];
 
-    if (letter == 'o' || letter == 'b') {
+    if (letter == 'o' || letter == 'b' || letter == '$' ) {
       decodedPattern += letter.repeat(count);
-    } else if(letter == '$') {
-      decodedPattern += '$';
+
     } else if(letter == '!') {
       decodedPattern += '!';
     }
@@ -47,6 +46,22 @@ export function decodeRLEPattern(encodedPattern) {
 }
 
 export function encodeRLEPattern(decodedPattern) {
-
-  return decodedPattern;
+  let encodedPattern = '';
+  let part = '';
+  let count = 1;
+  for(let i = 0; i< decodedPattern.length; i++ ) {
+    part = decodedPattern[i]
+    if (decodedPattern[i] == decodedPattern[i+1]) {
+      count++;
+    } else {
+      if(decodedPattern[i] == 'b' && (decodedPattern[i+1] == '$' || decodedPattern[i+1] == '!')) {
+      
+      } else {
+        encodedPattern += (count > 1 ? count : '') + decodedPattern[i];
+      }
+        count = 1;
+    
+    }
+  }
+  return encodedPattern;
 }
