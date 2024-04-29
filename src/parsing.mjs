@@ -93,6 +93,61 @@ export function patternToCells(data) {
 
 
 export function cellsToPattern(data) {
-  return ;
+  let minX=0;
+  let minY=0;
+  let maxY=0;
+  let width=0;
+  let maxX=0;
+  let patternString=data.length == 0 ? '!' : '';
+
+  if(data.length > 0) {
+    data.sort((a,b) => {
+      if(a.y != b.y) {
+        return a.y - b.y;
+      } else 
+        return a.x - b.x});
+
+    minY = data[0].y;
+    maxY = data[data.length-1].y;
+    minX = data.reduce((smallestX, current) => {
+      return Math.min(smallestX, current.x);
+    }, minX);
+    maxX = data.reduce((largestX, current) => {
+      return Math.max(largestX, current.x);
+    }, maxX);
+    width = data.length == 0 ? 0 : (maxX - minX)+1;
+    console.log(minX);
+    console.log(maxX);
+    console.log(minY);
+    console.log(maxY);
+    console.log(width);  
+    for(let i = minY; i<= maxY; i++) {
+      for(let j = minX; j<= maxX; j++) {
+        if (coordinateHasAliveCell(data, j, i))  {
+          patternString += 'o';
+
+        }
+        else patternString += 'b'
+      }
+      patternString += '$';
+    }
+    patternString = patternString.replace(/.$/, "") +'!';
+  }
+
+
+  return {
+    minX: minX,
+    minY: minY,
+    width: width,
+    pattern: patternString
+   };
 }
 
+function coordinateHasAliveCell(cells, x, y) {
+  for (let item of cells) {
+    if(item.x == x && item.y == y) {
+      return true;
+    }
+  }
+  return false;
+}

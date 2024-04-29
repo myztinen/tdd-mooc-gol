@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 import { expect } from "chai";
 import { parseRLE, encodedDataToFile, 
   decodeRLEPattern, encodeRLEPattern,
-  patternToCells} from "../src/parsing.mjs";
+  patternToCells, cellsToPattern} from "../src/parsing.mjs";
 
 
 describe("Parsing test", () => {
@@ -93,6 +93,9 @@ describe("Pattern to cells test", () => {
     expect(patternToCells("o$o$o$!")).to.eql([{x:0, y:0},
                                                {x:0, y:1},
                                                {x:0, y:2}]);
+    expect(patternToCells("o$o$o!")).to.eql([{x:0, y:0},
+                                               {x:0, y:1},
+                                               {x:0, y:2}]);                                           
   });
 
   test("Simple block to cells", () => {
@@ -102,7 +105,64 @@ describe("Pattern to cells test", () => {
                                                {x:1, y:1}]);
   });
 
-  test("Empty cells", () => {
+  test("Empty pattern", () => {
     expect(patternToCells("")).to.eql([]);
+  });
+});
+
+describe("Cells to pattern test", () => {
+  
+  test("Empty cells", () => {
+    expect(cellsToPattern([])).to.eql({
+                                       minX: 0,
+                                       minY: 0,
+                                       width: 0,
+                                       pattern: "!"
+                                      });
+  });
+
+  test("One cell", () => {
+    expect(cellsToPattern([{x:0, y:0}])).to.eql({
+                                       minX: 0,
+                                       minY: 0,
+                                       width: 1,
+                                       pattern: "o!"
+                                      });
+  });
+
+  test("Row of cells", () => {
+    let testCells = [{x:0, y:0},
+                    {x:1, y:0},
+                    {x:2, y:0}];
+    expect(cellsToPattern(testCells)).to.eql({
+                                       minX: 0,
+                                       minY: 0,
+                                       width: 3 ,
+                                       pattern: "ooo!"
+                                      });
+  });
+
+  test("Column of cells", () => {
+    let testCells = [{x:0, y:0},
+                     {x:0, y:1},
+                     {x:0, y:2}];
+    expect(cellsToPattern(testCells)).to.eql({
+                                       minX: 0,
+                                       minY: 0,
+                                       width: 1 ,
+                                       pattern: "o$o$o!"
+                                      });
+  });
+
+  test("Diagonal of cells", () => {
+    let testCells = [{x:0, y:0},
+                     {x:1, y:1},
+                     {x:2, y:2}];
+    expect(cellsToPattern(testCells)).to.eql({
+                                       minX: 0,
+                                       minY: 0,
+                                       width: 3 ,
+                                       pattern: "obb$bob$bbo!"
+                                      });
   });
 });
