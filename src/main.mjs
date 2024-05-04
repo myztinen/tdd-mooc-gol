@@ -13,12 +13,13 @@ export function main(filePath, iterations) {
 
   let parsedContents = parseRLE(fileContents);
   let decodedPattern = decodeRLEPattern(parsedContents.encodedPattern);
-  let startingCells = patternToCells(decodeRLEPattern);
+  let startingCells = patternToCells(decodedPattern);
   let endingCells = simulateGame(startingCells, iterations);
-  //let endingPattern = cellsToPattern(endingCells);
-  let encodedDataPattern = encodeRLEPattern(decodedPattern);
+  let endingPattern = cellsToPattern(endingCells);
+  let encodedDataPattern = encodeRLEPattern(endingPattern.pattern);
+  let newHeader = {x: endingPattern.width, y:endingPattern.height, rule: parsedContents.header.rule};
   let newFileContents = {comments: parsedContents.comments,
-                      header: parsedContents.header,
+                      header: newHeader,
                       encodedPattern : encodedDataPattern}
   let processedContents = encodedDataToFile(newFileContents);
   return processedContents;

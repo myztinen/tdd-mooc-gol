@@ -2,7 +2,8 @@ import { describe, test } from "vitest";
 import { expect } from "chai";
 import { parseRLE, encodedDataToFile, 
   decodeRLEPattern, encodeRLEPattern,
-  patternToCells, cellsToPattern} from "../src/parsing.mjs";
+  patternToCells, cellsToPattern,
+  parseHeader, stringifyHeader} from "../src/parsing.mjs";
 
 
 describe("Parsing test", () => {
@@ -12,7 +13,10 @@ describe("Parsing test", () => {
   test("Can read file", () => {
     let parsedContents = parseRLE(testContents);
     expect(parsedContents.comments).to.equal("#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\n");
-    expect(parsedContents.header).to.equal("x = 2, y = 2, rule = B3/S23");
+    expect(parsedContents.header.x).to.equal(2);
+    expect(parsedContents.header.y).to.equal(2);
+    expect(parsedContents.header.rule).to.equal("B3/S23");
+
     expect(parsedContents.encodedPattern).to.equal("2o$2o!");
   });
 
@@ -20,16 +24,32 @@ describe("Parsing test", () => {
     expect(() => parseRLE(noHeaderContent)).to.throw("Header is not found!");
   });
 
+
 });
 
 describe("Parsing test", () => {
   let testContents = "#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\nx = 2, y = 2, rule = B3/S23\n2o$2o!"
   let encodedData = {comments: "#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\n",
-                     header: "x = 2, y = 2, rule = B3/S23",
+                     //header: "x = 2, y = 2, rule = B3/S23",
+                     header: {x: 2, y: 2, rule:"B3/S23"},
                      encodedPattern : "2o$2o!"}
 
   test("header is empty", () => {
     expect(encodedDataToFile(encodedData)).to.equal(testContents);
+  });
+
+});
+
+
+describe("file header test", () => {
+  let headerString = "x = 2, y = 2, rule = B3/S23"
+  let parsedHeader = {x: 2, y: 2, rule:"B3/S23"}
+  test("parsing header", () => {
+    expect(parseHeader(headerString)).to.eql(parsedHeader);
+  });
+
+  test("encoding header", () => {
+    expect(stringifyHeader(parsedHeader)).to.eql(headerString);
   });
 
 });
@@ -117,6 +137,7 @@ describe("Cells to pattern test", () => {
                                        minX: 0,
                                        minY: 0,
                                        width: 0,
+                                       height:0,
                                        pattern: "!"
                                       });
   });
@@ -126,6 +147,7 @@ describe("Cells to pattern test", () => {
                                        minX: 0,
                                        minY: 0,
                                        width: 1,
+                                       height: 1,
                                        pattern: "o!"
                                       });
   });
@@ -137,7 +159,8 @@ describe("Cells to pattern test", () => {
     expect(cellsToPattern(testCells)).to.eql({
                                        minX: 0,
                                        minY: 0,
-                                       width: 3 ,
+                                       width: 3,
+                                       height: 1,
                                        pattern: "ooo!"
                                       });
   });
@@ -149,7 +172,8 @@ describe("Cells to pattern test", () => {
     expect(cellsToPattern(testCells)).to.eql({
                                        minX: 0,
                                        minY: 0,
-                                       width: 1 ,
+                                       width: 1,
+                                       height: 3,
                                        pattern: "o$o$o!"
                                       });
   });
@@ -161,7 +185,8 @@ describe("Cells to pattern test", () => {
     expect(cellsToPattern(testCells)).to.eql({
                                        minX: 0,
                                        minY: 0,
-                                       width: 3 ,
+                                       width: 3,
+                                       height: 3,
                                        pattern: "obb$bob$bbo!"
                                       });
   });

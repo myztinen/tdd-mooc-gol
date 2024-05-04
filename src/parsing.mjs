@@ -1,3 +1,4 @@
+import { result } from "lodash";
 import { coordinateIsInArray } from "./game.mjs";
 
 
@@ -10,7 +11,7 @@ export function parseRLE(fileContents) {
     rows.forEach(row => {
       let letter = row[0];
       if(letter == '#') hashComments +=row.trim() + '\n';
-      if (letter == 'x') fileHeader = row.trim();
+      if (letter == 'x') fileHeader = parseHeader(row.trim());
       else filePattern = row;
     })
 
@@ -20,10 +21,27 @@ export function parseRLE(fileContents) {
             encodedPattern : filePattern}
 }
 
+export function parseHeader(header) {
+  let parts = header.split(',');
+  let parsedHeader = {};
+
+  parts.forEach( part => {
+    let [key,value] = part.split('=').map(item => item.trim());
+    
+    parsedHeader[key] = isNaN(value) ? value : Number(value);
+  });
+  return parsedHeader;
+}
+
+export function stringifyHeader(header) {
+  let parts = Object.entries(header).map(([key, value]) => `${key} = ${value}`);
+  return parts.join(', ');
+}
+
 export function encodedDataToFile(data) {
   let newContents = '';
   newContents += data.comments.trim() + '\n';
-  newContents += data.header.trim() + '\n';
+  newContents += stringifyHeader(data.header) + '\n';
   newContents += data.encodedPattern.trim();
   return newContents;
 }
@@ -100,6 +118,7 @@ export function cellsToPattern(data) {
   let minY=0;
   let maxY=0;
   let width=0;
+  let height=0;
   let maxX=0;
   let patternString=data.length == 0 ? '!' : '';
 
@@ -119,6 +138,7 @@ export function cellsToPattern(data) {
       return Math.max(largestX, current.x);
     }, maxX);
     width = data.length == 0 ? 0 : (maxX - minX)+1;
+    height = data.length == 0 ? 0 : (maxY - minY)+1;
     for(let i = minY; i<= maxY; i++) {
       for(let j = minX; j<= maxX; j++) {
         if (coordinateIsInArray(data, {x:j, y:i}))  {
@@ -136,6 +156,7 @@ export function cellsToPattern(data) {
     minX: minX,
     minY: minY,
     width: width,
+    height: height,
     pattern: patternString
    };
 }
