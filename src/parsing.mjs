@@ -1,3 +1,6 @@
+import { coordinateHasAliveCell } from "./game.mjs";
+
+
 export function parseRLE(fileContents) {
   let hashComments= '';
   let fileHeader, filePattern;
@@ -116,14 +119,9 @@ export function cellsToPattern(data) {
       return Math.max(largestX, current.x);
     }, maxX);
     width = data.length == 0 ? 0 : (maxX - minX)+1;
-    console.log(minX);
-    console.log(maxX);
-    console.log(minY);
-    console.log(maxY);
-    console.log(width);  
     for(let i = minY; i<= maxY; i++) {
       for(let j = minX; j<= maxX; j++) {
-        if (coordinateHasAliveCell(data, j, i))  {
+        if (coordinateHasAliveCell(data, {x:j, y:i}))  {
           patternString += 'o';
 
         }
@@ -134,7 +132,6 @@ export function cellsToPattern(data) {
     patternString = patternString.replace(/.$/, "") +'!';
   }
 
-
   return {
     minX: minX,
     minY: minY,
@@ -143,11 +140,3 @@ export function cellsToPattern(data) {
    };
 }
 
-function coordinateHasAliveCell(cells, x, y) {
-  for (let item of cells) {
-    if(item.x == x && item.y == y) {
-      return true;
-    }
-  }
-  return false;
-}
