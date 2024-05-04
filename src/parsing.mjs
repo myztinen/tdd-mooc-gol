@@ -45,8 +45,18 @@ export function encodedDataToFile(data) {
   let newContents = '';
   newContents += data.comments.trim() + '\n';
   newContents += stringifyHeader(data.header) + '\n';
-  newContents += data.encodedPattern.trim();
+  newContents += splitLongEncodedPatternToLines(data.encodedPattern.trim());
   return newContents;
+}
+
+function splitLongEncodedPatternToLines(pattern) {
+  let finalPattern = '';
+  pattern.forEach(letter => {
+    if(finalPattern.length % 70 == 0 && finalPattern.length != 0) {
+      finalPattern += '\n';
+    }
+    finalPattern += letter;
+  })
 }
 
 export function decodeRLEPattern(encodedPattern) {
