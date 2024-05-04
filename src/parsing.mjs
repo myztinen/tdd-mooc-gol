@@ -4,7 +4,8 @@ import { coordinateIsInArray } from "./game.mjs";
 
 export function parseRLE(fileContents) {
   let hashComments= '';
-  let fileHeader, filePattern;
+  let filePattern = '';
+  let fileHeader;
 
     let rows = fileContents.split('\n');
 
@@ -12,7 +13,9 @@ export function parseRLE(fileContents) {
       let letter = row[0];
       if(letter == '#') hashComments +=row.trim() + '\n';
       if (letter == 'x') fileHeader = parseHeader(row.trim());
-      else filePattern = row;
+      else if(letter != '#' && letter != 'x') {
+        filePattern += row.trim();
+        }
     })
 
     if(fileHeader == undefined) throw new Error("Header is not found!");

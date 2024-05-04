@@ -16,7 +16,6 @@ export function main(filePath, iterations) {
   let startingCells = patternToCells(decodedPattern);
   let endingCells = simulateGame(startingCells, iterations);
   let endingPattern = cellsToPattern(endingCells);
-  console.log(endingPattern);
   let encodedDataPattern = encodeRLEPattern(endingPattern.pattern);
   let newHeader = {x: endingPattern.width, y:endingPattern.height, rule: parsedContents.header.rule};
   let newFileContents = {comments: parsedContents.comments,

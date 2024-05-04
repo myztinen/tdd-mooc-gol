@@ -25,7 +25,7 @@ describe("Parsing test", () => {
     expect(parsedContents.header.x).to.equal(36);
     expect(parsedContents.header.y).to.equal(9);
     expect(parsedContents.header.rule).to.equal("B3/S23");
-    expect(parsedContents.encodedPattern).to.equal("24bo11b$22bobo11b$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o14b$2o8bo3bob2o4bobo11b$10bo5bo7bo11b$11bo3bo20b$12b2o!$2o!");
+    expect(parsedContents.encodedPattern).to.equal("24bo11b$22bobo11b$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o14b$2o8bo3bob2o4bobo11b$10bo5bo7bo11b$11bo3bo20b$12b2o!");
   });
 
   test("header is empty", () => {
@@ -74,6 +74,11 @@ describe("Decoding test", () => {
 
   test("Repeated tags 2", () => {
     expect(decodeRLEPattern("2b2o3$!")).to.equal("bboo$$$!");
+  });
+
+  test.skip("Repeated tags 3", () => {
+    let longString = "bbbbo$bbbbb$obbbo$bbbbb$bbbbb$obbbo$!"
+    expect(decodeRLEPattern("4bo2$o3bo3$o3bo!$!")).to.equal(longString);
   });
 
   test("Empty string", () => {
