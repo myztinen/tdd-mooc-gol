@@ -5,6 +5,7 @@
   "license": "TODO",
   "private": true,
   "dependencies": {
+    "deep-equal-in-any-order": "^2.0.6",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

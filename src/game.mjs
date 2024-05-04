@@ -1,7 +1,12 @@
 import { forEach } from "lodash";
 
 export function simulateGame(startingCells, iterations) {
-  return;
+  let tempCells = [];
+  tempCells = startingCells.map((x) => x);
+  for(let i = 0; i<iterations; i++) {
+    tempCells = runStep(tempCells);
+    }
+  return tempCells;
 
 }
 
