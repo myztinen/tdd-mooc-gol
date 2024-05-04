@@ -51,12 +51,13 @@ export function encodedDataToFile(data) {
 
 function splitLongEncodedPatternToLines(pattern) {
   let finalPattern = '';
-  pattern.forEach(letter => {
+  Array.from(pattern).forEach(letter => {
     if(finalPattern.length % 70 == 0 && finalPattern.length != 0) {
       finalPattern += '\n';
     }
     finalPattern += letter;
   })
+  return finalPattern;
 }
 
 export function decodeRLEPattern(encodedPattern) {

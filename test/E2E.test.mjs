@@ -43,7 +43,7 @@ describe("First test", () => {
   });
 
 
-  test.skip("Gosper gun for 30 steps", () => {
+  test("Gosper gun for 30 steps", () => {
     let testContents = "#N Gosper glider gun\n#C www.conwaylife.com/wiki/index.php?title=Gosper_glider_gun\nx = 36, y = 12, rule = B3/S23\n24bo$22bobo$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o$2o8bo3bob2o4b\nobo$10bo5bo7bo$11bo3bo$12b2o$23bo$24b2o$23b2o!";
     let fileContents = main("./resourses/gosper.rle", 30);
     expect(fileContents).to.equal(testContents);
