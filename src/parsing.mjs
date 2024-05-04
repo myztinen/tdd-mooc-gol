@@ -1,4 +1,4 @@
-import { coordinateHasAliveCell } from "./game.mjs";
+import { coordinateIsInArray } from "./game.mjs";
 
 
 export function parseRLE(fileContents) {
@@ -121,7 +121,7 @@ export function cellsToPattern(data) {
     width = data.length == 0 ? 0 : (maxX - minX)+1;
     for(let i = minY; i<= maxY; i++) {
       for(let j = minX; j<= maxX; j++) {
-        if (coordinateHasAliveCell(data, {x:j, y:i}))  {
+        if (coordinateIsInArray(data, {x:j, y:i}))  {
           patternString += 'o';
 
         }
