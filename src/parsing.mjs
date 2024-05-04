@@ -51,7 +51,7 @@ export function encodedDataToFile(data) {
 
 export function decodeRLEPattern(encodedPattern) {
   let decodedPattern = '';
-  const patterRegexp = /(\d)?([ob$!])/g;
+  const patterRegexp = /(\d*)([ob$!])/g;
   let match;
 
 

@@ -77,8 +77,13 @@ describe("Decoding test", () => {
   });
 
   test("Repeated tags 3", () => {
-    let longString = "bbbbo$bbbbb$obbbo$bbbbb$bbbbb$obbbo$!"
-    expect(decodeRLEPattern("4bo2$o3bo3$o3bo!$!")).to.equal(longString);
+    let longString = "bbbbo$$obbbo$$$obbbo$!"
+    expect(decodeRLEPattern("4bo2$o3bo3$o3bo$!")).to.equal(longString);
+  });
+
+  test("Repeated tags 4", () => {
+    let longString = "bbbbbbbbbbbo$o!"
+    expect(decodeRLEPattern("11bo$o!")).to.equal(longString);
   });
 
   test("Empty string", () => {

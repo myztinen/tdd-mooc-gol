@@ -14,6 +14,7 @@ export function main(filePath, iterations) {
   let parsedContents = parseRLE(fileContents);
   let decodedPattern = decodeRLEPattern(parsedContents.encodedPattern);
   let startingCells = patternToCells(decodedPattern);
+  console.log(decodedPattern);
   let endingCells = simulateGame(startingCells, iterations);
   let endingPattern = cellsToPattern(endingCells);
   let encodedDataPattern = encodeRLEPattern(endingPattern.pattern);
