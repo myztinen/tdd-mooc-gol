@@ -9,15 +9,23 @@ import { parseRLE, encodedDataToFile,
 describe("Parsing test", () => {
   let testContents = "#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\nx = 2, y = 2, rule = B3/S23\n2o$2o!";
   let noHeaderContent = "#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\n2o$2o!";
-
+  let gosperHeader = "#N Gosper glider gun\n#C www.conwaylife.com/wiki/index.php?title=Gosper_glider_gun\nx = 36, y = 9, rule = B3/S23\n24bo11b$22bobo11b$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o14b$2o8b\no3bob2o4bobo11b$10bo5bo7bo11b$11bo3bo20b$12b2o!";
   test("Can read file", () => {
     let parsedContents = parseRLE(testContents);
     expect(parsedContents.comments).to.equal("#N Block\n#C An extremely common 4-cell still life.\n#C www.conwaylife.com/wiki/index.php?title=Block\n");
     expect(parsedContents.header.x).to.equal(2);
     expect(parsedContents.header.y).to.equal(2);
     expect(parsedContents.header.rule).to.equal("B3/S23");
-
     expect(parsedContents.encodedPattern).to.equal("2o$2o!");
+  });
+
+  test("Parse pattern that spans more than one row", () => {
+    let parsedContents = parseRLE(gosperHeader);
+    expect(parsedContents.comments).to.equal("#N Gosper glider gun\n#C www.conwaylife.com/wiki/index.php?title=Gosper_glider_gun\n");
+    expect(parsedContents.header.x).to.equal(36);
+    expect(parsedContents.header.y).to.equal(9);
+    expect(parsedContents.header.rule).to.equal("B3/S23");
+    expect(parsedContents.encodedPattern).to.equal("24bo11b$22bobo11b$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o14b$2o8bo3bob2o4bobo11b$10bo5bo7bo11b$11bo3bo20b$12b2o!$2o!");
   });
 
   test("header is empty", () => {
