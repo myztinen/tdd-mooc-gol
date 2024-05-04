@@ -114,8 +114,8 @@ export function patternToCells(data) {
 
 
 export function cellsToPattern(data) {
-  let minX=0;
-  let minY=0;
+  let minX=data.length == 0 ? 0 : 9999999999;
+  let minY=data.length == 0 ? 0 : 9999999999;
   let maxY=0;
   let width=0;
   let height=0;
@@ -151,7 +151,6 @@ export function cellsToPattern(data) {
     }
     patternString = patternString.replace(/.$/, "") +'!';
   }
-
   return {
     minX: minX,
     minY: minY,
